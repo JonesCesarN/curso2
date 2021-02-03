@@ -5,8 +5,14 @@ const bodyParser = require('body-parser')
 
 //import internos
 const conn = require('./database/database') 
+
+//controllers
 const categoriesController = require('./categories/CategoriesController')
 const articleController = require('./article/articlesController')
+
+//models
+const Article = require('./article/Article');
+const Category = require('./categories/Category');
 
 // view engine
 app.set('view engine', 'ejs');
