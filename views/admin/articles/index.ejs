@@ -1,0 +1,48 @@
+<%- include ('../../partials/header') %>
+<%- include ('../../partials/navbar') %>
+<div class="container">
+    <hr>
+    <h2>Artigos</h2>
+    <a class="btn btn-success" href="/admin/articles/new">Criar novo artigo</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titulo</th>
+                <!-- <th>Slug</th> -->
+                <th>Categoria</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% articles.forEach(article => { %>
+                <tr>
+                    <td><%= article.id %></td>
+                    <td><%= article.title %></td>
+                    <!-- <td><%= article.slug %></td> -->
+                    <td><%= article.category.title %></td>
+                    <td>
+                        <a href="/admin/categories/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
+
+                        <form action="/articles/delete" method="POST" style="display: inline;" onsubmit="confirmarDelet(event, this)">
+                            <input type="hidden" name="id" value="<%= article.id %>">
+                            <button class="btn btn-danger">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    
+</div>
+<%- include ('../../partials/footer') %>
+<script>
+    function confirmarDelet(event, form){
+        event.preventDefault();
+        var decision = confirm('Você quer deletar este artigo ?');
+        if(decision){
+            form.submit();
+        }
+    }
+</script>

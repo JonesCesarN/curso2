@@ -9,6 +9,7 @@ const conn = require('./database/database')
 //controllers
 const categoriesController = require('./categories/CategoriesController')
 const articleController = require('./article/articlesController')
+const listController = require('./list/listController')
 
 //models
 const Article = require('./article/Article');
@@ -34,13 +35,80 @@ conn
 // rotas exports
 app.use('/', categoriesController);
 app.use('/', articleController);
+app.use('/', listController);
 
 
 
 // rotas
 app.get('/', (req, res) =>{
-    res.render('index')
+
+    Article
+        .findAll({
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        .then(articles => {
+
+            Category
+                .findAll()
+                .then(categories => {
+                    res.render('index', {articles: articles, categories: categories});
+                })
+        })
 });
+
+app.get('/:slug', (req,res) => {
+    var slug = req.params.slug;
+    Article
+        .findOne({
+        where: {
+            slug: slug
+        }
+        })
+        .then(article => {
+            if(article != undefined){
+                Category
+                .findAll()
+                .then(categories => {
+                    res.render('article', {article: article, categories: categories});
+                })
+            }else{
+                res.redirect('/')
+            }
+        })
+        .catch( err => {
+            res.redirect('/')
+        })
+})
+
+app.get('/category/:slug', (req,res) => {
+    var slug = req.params.slug;
+    Category
+        .findOne({
+        where: {
+            slug: slug
+        },
+        include: [{model: Article}]
+        })
+        .then( category => {
+            if(category != undefined){
+
+                Category
+                    .findAll()
+                    .then(categories => {
+                        res.render('index', {articles: category.articles, categories})
+                    })
+
+            }else{
+                res.redirect('/')
+            }
+        })
+        .catch( err => {
+            res.redirect('/')
+        })
+})
+
 
 //teste adicionado
 
