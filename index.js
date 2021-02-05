@@ -9,7 +9,6 @@ const conn = require('./database/database')
 //controllers
 const categoriesController = require('./categories/CategoriesController')
 const articleController = require('./article/articlesController')
-const listController = require('./list/listController')
 
 //models
 const Article = require('./article/Article');
@@ -35,7 +34,6 @@ conn
 // rotas exports
 app.use('/', categoriesController);
 app.use('/', articleController);
-app.use('/', listController);
 
 
 

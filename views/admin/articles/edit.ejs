@@ -5,22 +5,32 @@
     <hr>
     <div class="card">
         <div class="card-header">
-          <h2>Novo link</h2>
+          <h2>Editar link</h2>
         </div>
         <div class="card-body">
-            <form action="/articles/save" method="post">
-                <input class="form-control" type="text" name="title" placeholder="Nome do link">
+            <form action="/articles/update" method="post">
+                <input type="hidden" value="<%= article.id %>" name="id">
+                <label for="">Nome</label>
+                <input class="form-control" type="text" name="title"  value="<%= article.title %>">
                 <br>
-                <textarea class="form-control" placeholder="Link do link xD" name="body" id="article"></textarea>
+                <label for="">Link</label>
+                <textarea class="form-control" name="body" id="article" ><%= article.body %></textarea>
                 <br>
                 <label for="">Categoria</label>
                 <select name="category" class="form-control">
                     <% categories.forEach((category) => { %>
-                        <option value="<%= category.id %>"><%= category.title %></option>
+                        
+                        <% if(category.id == article.categoryId) { %>
+                            <option value="<%= category.id %>" selected><%= category.title %></option>
+                        <% }else{ %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% } %>
+
+
                     <% }) %>
                 </select>
                 <br>
-                <button class="btn btn-success">Cadastrar</button>
+                <button class="btn btn-success">Atualizar</button>
             </form>
         </div><!-- card-body -->
     </div><!-- card -->
